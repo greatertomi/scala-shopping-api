@@ -4,7 +4,7 @@ package graphql
 import sangria.schema._
 
 object SchemaFactory {
-  val Query: ObjectType[Ctx, Unit] = ObjectType("Query", fields[Ctx, Unit](
+  val Query: ObjectType[Any, Unit] = ObjectType("Query", fields[Any, Unit](
     Field(
       "products",
       StringType,
@@ -12,5 +12,5 @@ object SchemaFactory {
     )
   ))
 
-  val ShoppingSchema: Schema[Unit, Unit] = Schema(Query)
+  val ShoppingSchema: Schema[Any, Unit] = Schema(Query)
 }

@@ -1,21 +1,24 @@
 package org.john.shopping
 
+import database.{PostgresProfile, Tables}
+import graphql.SchemaFactory
+import repositories.ProductRepository
+import utilities.CorsSupport
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.alpakka.slick.scaladsl.SlickSession
-import database.{PostgresProfile, Tables}
-import utilities.CorsSupport
 import sangria.execution.{ErrorWithResolver, Executor, QueryReducingError}
-import sangria.execution.deferred.DeferredResolver
 import sangria.http.akka.circe.CirceHttpSupport
-import sangria.slowlog.SlowLog
 import sangria.marshalling.circe._
+import sangria.slowlog.SlowLog
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
 object Server extends App with CorsSupport with CirceHttpSupport {
@@ -32,15 +35,15 @@ object Server extends App with CorsSupport with CirceHttpSupport {
           prepareGraphQLRequest {
             case Success(req) =>
               val middleware = if (tracing.isDefined) SlowLog.apolloTracing :: Nil else Nil
-              val deferredResolver = DeferredResolver.fetchers(SchemaDefinition.characters)
+//              val deferredResolver = DeferredResolver.fetchers(SchemaFactory.characters)
               val graphQLResponse = Executor.execute(
-                schema = SchemaDefinition.StarWarsSchema,
+                schema = SchemaFactory.ShoppingSchema,
                 queryAst = req.query,
-                userContext = new CharacterRepo(slickSession=slickSession, tables = tables),
+                userContext = new ProductRepository(slickSession=slickSession, tables = tables),
                 variables = req.variables,
                 operationName = req.operationName,
                 middleware = middleware,
-                deferredResolver = deferredResolver
+//                deferredResolver = deferredResolver
               ).map(OK -> _)
                 .recover {
                   case error: QueryReducingError => BadRequest -> error.resolveError
