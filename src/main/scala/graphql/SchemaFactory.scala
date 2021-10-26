@@ -1,16 +1,21 @@
 package org.john.shopping
 package graphql
 
+import graphql.types.ProductDefinition.ProductType
+import repositories.ProductRepository
+
 import sangria.schema._
 
+
 object SchemaFactory {
-  val Query: ObjectType[Any, Unit] = ObjectType("Query", fields[Any, Unit](
+  val Query: ObjectType[ProductRepository, Unit] =
+    ObjectType("Query", fields[ProductRepository, Unit](
     Field(
       "products",
-      StringType,
-      resolve = req => "Hello from graphQL"
+      ListType(ProductType),
+      resolve = req => req.ctx.getProducts
     )
   ))
 
-  val ShoppingSchema: Schema[Any, Unit] = Schema(Query)
+  val ShoppingSchema: Schema[ProductRepository, Unit] = Schema(Query)
 }

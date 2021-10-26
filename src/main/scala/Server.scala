@@ -35,7 +35,6 @@ object Server extends App with CorsSupport with CirceHttpSupport {
           prepareGraphQLRequest {
             case Success(req) =>
               val middleware = if (tracing.isDefined) SlowLog.apolloTracing :: Nil else Nil
-//              val deferredResolver = DeferredResolver.fetchers(SchemaFactory.characters)
               val graphQLResponse = Executor.execute(
                 schema = SchemaFactory.ShoppingSchema,
                 queryAst = req.query,
@@ -43,7 +42,6 @@ object Server extends App with CorsSupport with CirceHttpSupport {
                 variables = req.variables,
                 operationName = req.operationName,
                 middleware = middleware,
-//                deferredResolver = deferredResolver
               ).map(OK -> _)
                 .recover {
                   case error: QueryReducingError => BadRequest -> error.resolveError
