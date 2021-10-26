@@ -2,10 +2,10 @@ package org.john.shopping
 package graphql.types
 
 import sangria.schema._
-import org.john.shopping.database.Product
+import database.Product
 
 object ProductDefinition {
-  val Product: ObjectType[Unit, Product] = ObjectType(
+  val ProductType: ObjectType[Unit, Product] = ObjectType(
     "Product",
     "Products in the store",
     fields[Unit, Product](
@@ -16,7 +16,7 @@ object ProductDefinition {
       Field("price", IntType, resolve = _.value.price),
       Field("currentQuantity", IntType, resolve = _.value.currentQuantity),
       Field("createdBy", OptionType(StringType), resolve = _.value.createdBy),
-      Field("createdBy", StringType, resolve = _.value.createdDate),
+      Field("createdDate", StringType, resolve = _.value.createdDate),
     )
   )
 }

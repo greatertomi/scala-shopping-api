@@ -22,4 +22,6 @@ class Tables (val jdbcProfile: PostgresProfile) {
       def * = (id, name, description, status, price, currentQuantity, createdBy, createdDate) <> (Product.tupled, Product.unapply)
     }
   }
+
+  val Products = TableQuery[schema.Products]
 }
