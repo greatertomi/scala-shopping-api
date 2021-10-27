@@ -3,8 +3,7 @@ package repositories
 
 import akka.stream.alpakka.slick.scaladsl.SlickSession
 import com.google.inject.Inject
-import database.Tables
-import database.Product
+import database.{Tables, Product}
 
 import scala.concurrent.Future
 
