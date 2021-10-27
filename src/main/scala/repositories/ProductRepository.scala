@@ -15,5 +15,9 @@ class ProductRepository @Inject()(slickSession: SlickSession, tables: Tables) {
   def getProducts: Future[Seq[Product]] = slickSession.db run {
     Products.result
   }
+
+  def getProduct(id: Int): Future[Option[Product]] = slickSession.db run {
+    Products.filter(_.id === id).result.headOption
+  }
 }
 

@@ -3,7 +3,7 @@ package graphql
 
 import sangria.schema._
 
-trait CommonArguments {
+object CommonArguments {
   val idArg = Argument("id", IntType)
   val nameArg = Argument("name", StringType)
   val descriptionArg = Argument("description", StringType)
