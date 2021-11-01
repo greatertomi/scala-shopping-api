@@ -1,7 +1,7 @@
 package org.john.shopping
 package graphql
 
-import org.john.shopping.repositories.UserRepository
+import repositories.UserRepository
 import sangria.schema._
 
 trait Module {
