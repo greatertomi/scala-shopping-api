@@ -1,11 +1,10 @@
 package org.john.shopping
 package graphql
 
-import repositories.UserRepository
 import sangria.schema._
 
 trait Module {
-  def queryFields: List[Field[UserRepository, Unit]] = Nil
-  def mutationFields: List[Field[Unit, Unit]] = Nil
-  def subscriptionFields: List[Field[Unit, Unit]] = Nil
+  def queryFields: List[Field[Ctx, Unit]] = Nil
+  def mutationFields: List[Field[Ctx, Unit]] = Nil
+  def subscriptionFields: List[Field[Ctx, Unit]] = Nil
 }

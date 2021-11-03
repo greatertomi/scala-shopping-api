@@ -3,17 +3,17 @@ package graphql.modules
 
 import graphql.types.UserDefinition.UserType
 import repositories.UserRepository
-
-import graphql.Module
+import graphql.{Ctx, Module}
 
 import sangria.schema._
 
-class User extends Module {
-  override val queryFields: List[Field[UserRepository, Unit]] = fields(
+object User extends Module {
+  import org.john.shopping.graphql.CtxImplicits._
+  override val queryFields: List[Field[Ctx, Unit]] = fields(
     Field(
       "users",
       ListType(UserType),
-      resolve = req => req.ctx.getUsers
+      resolve = implicit req => userCtx.userRepository.getUsers
     )
   )
 }
