@@ -1,7 +1,8 @@
 package org.john.shopping
 
 import database.{PostgresProfile, Tables}
-import graphql.SchemaFactory
+
+import org.john.shopping.graphql.SchemaFactory
 import repositories.ProductRepository
 import utilities.CorsSupport
 
@@ -36,9 +37,8 @@ object Server extends App with CorsSupport with CirceHttpSupport {
             case Success(req) =>
               val middleware = if (tracing.isDefined) SlowLog.apolloTracing :: Nil else Nil
               val graphQLResponse = Executor.execute(
-                schema = SchemaFactory.ShoppingSchema,
+                schema = SchemaFactory.get(),
                 queryAst = req.query,
-                userContext = new ProductRepository(slickSession=slickSession, tables = tables),
                 variables = req.variables,
                 operationName = req.operationName,
                 middleware = middleware,
