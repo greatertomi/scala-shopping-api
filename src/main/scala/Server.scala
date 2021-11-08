@@ -1,9 +1,7 @@
 package org.john.shopping
 
 import database.{PostgresProfile, Tables}
-
-import org.john.shopping.graphql.{Ctx, SchemaFactory}
-import repositories.ProductRepository
+import graphql.{Ctx, SchemaFactory}
 import utilities.CorsSupport
 
 import akka.actor.ActorSystem

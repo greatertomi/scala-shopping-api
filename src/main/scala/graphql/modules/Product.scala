@@ -6,7 +6,6 @@ import graphql.{Ctx, Module}
 import sangria.schema._
 
 object Product extends Module {
-  import org.john.shopping.graphql.CtxImplicits._
 
   override val queryFields: List[Field[Ctx, Unit]] = fields(
     Field(

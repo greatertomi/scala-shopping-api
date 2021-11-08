@@ -1,11 +1,12 @@
 package org.john.shopping
 package graphql
 
+import models.timezone.Timezone
+import repositories.{ProductRepository, UserRepository}
+import services.Configuration
+
 import akka.stream.Materializer
 import com.google.inject.Injector
-import org.john.shopping.models.timezone.Timezone
-import org.john.shopping.repositories.{ProductRepository, UserRepository}
-import org.john.shopping.services.Configuration
 
 import scala.concurrent.ExecutionContext
 
@@ -31,4 +32,3 @@ case class AnonymousUserCtx(injector: Injector, userRepository: UserRepository,
                            (implicit val materializer: Materializer, val executionContext: ExecutionContext) extends Ctx {
   override def timezone: Timezone = configuration.getTimezone
 }
-
