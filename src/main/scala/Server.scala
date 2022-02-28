@@ -11,6 +11,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.alpakka.slick.scaladsl.SlickSession
 import io.circe.Json
+import org.joda.time.DateTime
 import sangria.execution.{ErrorWithResolver, Executor, QueryReducingError}
 import sangria.http.akka.circe.CirceHttpSupport
 import sangria.marshalling.circe._
@@ -41,6 +42,7 @@ object Server extends App with CorsSupport with CirceHttpSupport {
                 variables = req.variables,
                 operationName = req.operationName,
                 middleware = middleware,
+                userContext = Ctx(DateTime.now()),
               ).map(OK -> _)
                 .recover {
                   case error: QueryReducingError => BadRequest -> error.resolveError
