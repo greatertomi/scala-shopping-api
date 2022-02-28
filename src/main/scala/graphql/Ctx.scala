@@ -31,4 +31,5 @@ case class AnonymousUserCtx(injector: Injector, userRepository: UserRepository,
                             configuration: Configuration)
                            (implicit val materializer: Materializer, val executionContext: ExecutionContext) extends Ctx {
   override def timezone: Timezone = configuration.getTimezone
+
 }

@@ -10,6 +10,7 @@ import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.alpakka.slick.scaladsl.SlickSession
+import io.circe.Json
 import sangria.execution.{ErrorWithResolver, Executor, QueryReducingError}
 import sangria.http.akka.circe.CirceHttpSupport
 import sangria.marshalling.circe._
@@ -34,7 +35,7 @@ object Server extends App with CorsSupport with CirceHttpSupport {
           prepareGraphQLRequest {
             case Success(req) =>
               val middleware = if (tracing.isDefined) SlowLog.apolloTracing :: Nil else Nil
-              val graphQLResponse = Executor.execute[Ctx, Unit, Any](
+              val graphQLResponse = Executor.execute[Ctx, Unit, Json](
                 schema = SchemaFactory.get(),
                 queryAst = req.query,
                 variables = req.variables,
