@@ -12,6 +12,7 @@ import akka.http.scaladsl.server.Route
 import akka.stream.alpakka.slick.scaladsl.SlickSession
 import io.circe.Json
 import org.joda.time.DateTime
+import org.john.shopping.repositories.UserRepository
 import sangria.execution.{ErrorWithResolver, Executor, QueryReducingError}
 import sangria.http.akka.circe.CirceHttpSupport
 import sangria.marshalling.circe._
@@ -28,6 +29,7 @@ object Server extends App with CorsSupport with CirceHttpSupport {
     DatabaseConfig.forConfig[JdbcProfile]("slick")
   }
   val tables = new Tables(slickSession.profile.asInstanceOf[PostgresProfile])
+  val userRepository = new UserRepository(slickSession, tables)
 
   val route: Route =
     optionalHeaderValueByName("X-Apollo-Tracing") { tracing =>
@@ -42,7 +44,7 @@ object Server extends App with CorsSupport with CirceHttpSupport {
                 variables = req.variables,
                 operationName = req.operationName,
                 middleware = middleware,
-                userContext = Ctx(DateTime.now()),
+                userContext = Ctx(DateTime.now(), userRepository = userRepository),
               ).map(OK -> _)
                 .recover {
                   case error: QueryReducingError => BadRequest -> error.resolveError

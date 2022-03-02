@@ -12,8 +12,7 @@ object User extends Module {
     Field(
       "users",
       ListType(UserType),
-      // TODO Update Ctx so that is has user repository which can get users from the db
-      resolve = implicit req => ???, // ctx.userRepository.getUsers
+      resolve = implicit req => ctx.userRepository.getUsers, // ctx.userRepository.getUsers
     )
   )
 }

@@ -1,10 +1,11 @@
 package org.john.shopping
 package services
 
+import models.timezone.Timezone
+
 import akka.stream.Materializer
 import com.google.inject.{Inject, Injector}
 import io.circe.Json
-import org.john.shopping.models.timezone.Timezone
 
 import scala.concurrent.ExecutionContext
 
